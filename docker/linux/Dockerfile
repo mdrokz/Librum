@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libclang-dev \
     llvm-dev \
+    ninja-build \
     cmake \
     g++ \
     make \
@@ -41,9 +42,9 @@ RUN cd qt-everywhere-src-${QT_SEMVER} && \
     git submodule update --init && \
     mkdir build && \
     cd build && \
-    ../configure -prefix /home/qt && \
-    make -j$(nproc) && \
-    make install
+    ../configure -prefix /home/qt -nomake examples -nomake tests -opensource -confirm-license -release -c++std c++11
+    ninja && \
+    ninja install
 
 # Clean up QT sources and build the application
 RUN rm -rf qt-everywhere-src-${QT_SEMVER} && \
